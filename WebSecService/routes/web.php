@@ -26,6 +26,18 @@ Route::get('/minitest', function () {
         ['item' => 'Milk', 'quantity' => 1, 'price' => 1.80],
         ['item' => 'Eggs', 'quantity' => 12, 'price' => 3.50],
     ];
-
     return view('minitest', ['bill' => $bill]);
 });
+
+Route::get('/transcript', function () {
+    $transcript = [
+        ['course' => 'Mathematics', 'grade' => 'A', 'credits' => 3],
+        ['course' => 'Computer Science', 'grade' => 'B+', 'credits' => 4],
+        ['course' => 'Physics', 'grade' => 'A-', 'credits' => 3],
+        ['course' => 'Cyber Security', 'grade' => 'A', 'credits' => 3],
+        ['course' => 'Database Systems', 'grade' => 'B', 'credits' => 3],
+    ];
+
+    return view('transcript', ['transcript' => $transcript]);
+});
+

@@ -16,6 +16,12 @@
       <li class="nav-item">
         <a class="nav-link" href="{{ url('multiquiz') }}">Multiplication Quiz</a>
       </li>
+      <li class="nav-item">
+        <a class="nav-link" href="{{ url('minitest') }}">MiniTest</a>
+      </li>
+      <li class="nav-item">
+    <a class="nav-link" href="{{ url('transcript') }}">Transcript</a>
+    </li>
     </ul>
   </div>
 </nav>
