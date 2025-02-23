@@ -4,9 +4,9 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Kamel Ahmed</title>
-    <link href="{{ asset('css/bootstrap.min.css') }}" rel="stylesheet">
-    <script src="{{ asset('js/bootstrap.bundle.min.js') }}"></script>
+    <title>Ali Tamer</title>
+    <link href="{{ asset('public/css/bootstrap.min.css') }}" rel="stylesheet">
+ <script src="{{ asset('public/js/bootstrap.bundle.min.js') }}"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 </head>
 
