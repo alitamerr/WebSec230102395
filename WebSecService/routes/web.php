@@ -18,3 +18,14 @@ Route::get('/multable/{number?}', function ($number = null) {
 Route::get('/multiquiz', function () {
     return view('multiquiz');
 });
+
+Route::get('/minitest', function () {
+    $bill = [
+        ['item' => 'Apple', 'quantity' => 2, 'price' => 1.50],
+        ['item' => 'Bread', 'quantity' => 1, 'price' => 2.00],
+        ['item' => 'Milk', 'quantity' => 1, 'price' => 1.80],
+        ['item' => 'Eggs', 'quantity' => 12, 'price' => 3.50],
+    ];
+
+    return view('minitest', ['bill' => $bill]);
+});
