@@ -22,6 +22,17 @@
       <li class="nav-item">
     <a class="nav-link" href="{{ url('transcript') }}">Transcript</a>
     </li>
+    <li class="nav-item">
+    <a class="nav-link" href="{{ url('products') }}">Products</a>
+    </li>
+    <li class="nav-item">
+    <a class="nav-link" href="{{ url('/calculator') }}">Calculator</a>
+    </li>
+    <li class="nav-item">
+    <a class="nav-link" href="{{ url('/gpa-simulator') }}">GPA Simulator</a>
+    </li>
+
+
     </ul>
   </div>
 </nav>
