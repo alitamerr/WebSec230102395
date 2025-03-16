@@ -8,6 +8,7 @@ use App\Http\Controllers\GpaSimulatorController;
 use App\Http\Controllers\GradesController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\BookController;
 
 Route::get('/profile', [ProfileController::class, 'changePassword'])->name('profile');
 Route::post('/profile/update-password', [ProfileController::class, 'updatePassword'])->name('update_password');
@@ -70,4 +71,8 @@ Route::middleware('auth')->group(function () {
 
 Route::middleware(['auth'])->group(function () {
     Route::resource('grades', GradesController::class);
+});
+
+Route::middleware('auth')->group(function () {
+    Route::resource('books', BookController::class);
 });

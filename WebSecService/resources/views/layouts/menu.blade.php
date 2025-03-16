@@ -1,3 +1,13 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>@yield('title', 'Laravel App')</title>
+    
+    <link href="{{ asset('css/bootstrap.min.css') }}" rel="stylesheet">
+    <script src="{{ asset('js/bootstrap.bundle.min.js') }}"></script>
+</head>
 <nav class="navbar navbar-expand-sm bg-light">
   <div class="container-fluid">
     <ul class="navbar-nav me-auto">
@@ -36,6 +46,10 @@
       @auth
         <li class="nav-item">
           <a class="nav-link" href="{{ route('grades.index') }}">Grades</a>
+        </li>
+        {{-- Add "Books" Section --}}
+        <li class="nav-item">
+          <a class="nav-link" href="{{ route('books.index') }}">📚 My Books</a>
         </li>
       @endauth
     </ul>

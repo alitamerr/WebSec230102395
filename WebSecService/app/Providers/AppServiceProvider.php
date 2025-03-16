@@ -7,6 +7,9 @@ use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\Http\Kernel;
 use Spatie\Permission\Middleware\RoleMiddleware;
 use Spatie\Permission\Middleware\PermissionMiddleware;
+use App\Models\Book;
+use App\Policies\BookPolicy;
+
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -20,6 +23,10 @@ class AppServiceProvider extends ServiceProvider
         $this->app->singleton(PermissionMiddleware::class);
 
     }
+
+    protected $policies = [
+        Book::class => BookPolicy::class,
+    ];
 
     /**
      * Bootstrap any application services.
