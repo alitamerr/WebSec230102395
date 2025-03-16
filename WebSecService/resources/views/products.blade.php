@@ -1,18 +1,16 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Product Catalog</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Products</title>
     <link href="{{ asset('css/bootstrap.min.css') }}" rel="stylesheet">
     <script src="{{ asset('js/bootstrap.bundle.min.js') }}"></script>
 </head>
-
 <body>
     @extends('layouts.master')
 
-    @section('title', 'Product Catalog')
+    @section('title', 'Products')
 
     @section('content')
     <div class="container mt-4">
@@ -25,7 +23,7 @@
                         <div class="card-body">
                             <h5 class="card-title">{{ $product['name'] }}</h5>
                             <p class="card-text">{{ $product['description'] }}</p>
-                            <p class="card-text"><strong>Price: ${{ $product['price'] }}</strong></p>
+                            <p class="card-text"><strong>${{ number_format($product['price'], 2) }}</strong></p>
                             <button class="btn btn-primary">Add to Cart</button>
                         </div>
                     </div>
@@ -35,5 +33,4 @@
     </div>
     @endsection
 </body>
-
 </html>

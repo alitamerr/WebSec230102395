@@ -1,81 +1,73 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\UserController;
+use App\Http\Controllers\ProductsController;
+use App\Http\Controllers\PageController;
 use App\Http\Controllers\GpaSimulatorController;
+use App\Http\Controllers\GradesController;
+use App\Http\Controllers\AdminController;
+use App\Http\Controllers\ProfileController;
 
+Route::get('/profile', [ProfileController::class, 'changePassword'])->name('profile');
+Route::post('/profile/update-password', [ProfileController::class, 'updatePassword'])->name('update_password');
+
+// Home Page
 Route::get('/', function () {
     return view('welcome');
-});
-Route::get('/even', function () {
-    return view('even');
-});
-Route::get('/prime', function () {
-    return view('prime');
-});
-Route::get('/multable/{number?}', function ($number = null) {
-    $j = $number ?? 2;
-    return view('multable', compact('j'));
-});
-Route::get('/multiquiz', function () {
-    return view('multiquiz');
+})->name('home');
+
+// Authentication Routes
+Route::controller(UserController::class)->group(function () {
+    Route::get('register', 'register')->name('register');
+    Route::post('register', 'doRegister')->name('do_register');
+    Route::get('login', 'login')->name('login');
+    Route::post('login', 'doLogin')->name('do_login');
+    Route::get('logout', [UserController::class, 'doLogout'])->name('do_logout');
+    Route::get('/change-password', 'ProfileController@changePassword')->name('change_password');
+    Route::post('/change-password', 'ProfileController@updatePassword')->name('update_password');
 });
 
-Route::get('/minitest', function () {
-    $bill = [
-        ['item' => 'Apple', 'quantity' => 2, 'price' => 1.50],
-        ['item' => 'Bread', 'quantity' => 1, 'price' => 2.00],
-        ['item' => 'Milk', 'quantity' => 1, 'price' => 1.80],
-        ['item' => 'Eggs', 'quantity' => 12, 'price' => 3.50],
-    ];
-    return view('minitest', ['bill' => $bill]);
+// Profile & Password Change
+Route::middleware('auth')->group(function () {
+    Route::controller(UserController::class)->group(function () {
+        Route::get('profile', 'showProfile')->name('profile');
+        Route::post('change-password', 'changePassword')->name('change_password');
+    });
 });
 
-Route::get('/transcript', function () {
-    $transcript = [
-        ['course' => 'Mathematics', 'grade' => 'A', 'credits' => 3],
-        ['course' => 'Computer Science', 'grade' => 'B+', 'credits' => 4],
-        ['course' => 'Physics', 'grade' => 'A-', 'credits' => 3],
-        ['course' => 'Cyber Security', 'grade' => 'A', 'credits' => 3],
-        ['course' => 'Database Systems', 'grade' => 'B', 'credits' => 3],
-    ];
 
-    return view('transcript', ['transcript' => $transcript]);
+// Pages
+Route::controller(PageController::class)->group(function () {
+    Route::get('/calculator', 'calculator')->name('calculator');
+    Route::get('/even', 'even')->name('even');
+    Route::get('/multable', 'multable')->name('multable');
+    Route::get('/prime', 'prime')->name('prime');
+    Route::get('/transcript', 'transcript')->name('transcript');
 });
 
-Route::get('/products', function () {
-    $products = [
-        [
-            'name' => 'Laptop',
-            'image' => 'https://via.placeholder.com/150',
-            'price' => 1200,
-            'description' => 'High-performance laptop with 16GB RAM and 512GB SSD.',
-        ],
-        [
-            'name' => 'Smartphone',
-            'image' => 'https://via.placeholder.com/150',
-            'price' => 800,
-            'description' => 'Latest smartphone with 5G support and 128GB storage.',
-        ],
-        [
-            'name' => 'Headphones',
-            'image' => 'https://via.placeholder.com/150',
-            'price' => 150,
-            'description' => 'Wireless noise-canceling headphones with deep bass.',
-        ],
-        [
-            'name' => 'Smartwatch',
-            'image' => 'https://via.placeholder.com/150',
-            'price' => 200,
-            'description' => 'Water-resistant smartwatch with heart rate monitoring.',
-        ],
-    ];
-
-    return view('products', ['products' => $products]);
+// Products
+Route::controller(ProductsController::class)->group(function () {
+    Route::get('/products', 'list')->name('products');
 });
 
-Route::get('/calculator', function () {
-    return view('calculator');
+// GPA Simulator
+Route::controller(GpaSimulatorController::class)->group(function () {
+    Route::get('/gpa-simulator', 'index')->name('gpa_simulator');
 });
 
-Route::get('/gpa-simulator', [GpaSimulatorController::class, 'index']);
+Route::middleware(['auth', 'role:admin'])->group(function () {
+    Route::get('admin/dashboard', [AdminController::class, 'index'])->name('admin.dashboard');
+    Route::get('admin/users', [AdminController::class, 'users'])->name('admin.users');
+    Route::post('admin/users/{id}/assign-role', [AdminController::class, 'assignRole'])->name('admin.assign_role');
+    Route::post('admin/users/{id}/remove-role', [AdminController::class, 'removeRole'])->name('admin.remove_role');
+});
 
+Route::middleware('auth')->group(function () {
+    Route::get('profile', [UserController::class, 'showProfile'])->name('profile');
+    Route::post('change-password', [UserController::class, 'changePassword'])->name('change_password');
+});
+
+Route::middleware(['auth'])->group(function () {
+    Route::resource('grades', GradesController::class);
+});
