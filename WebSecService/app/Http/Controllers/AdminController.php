@@ -16,12 +16,6 @@ use Illuminate\Support\Facades\Auth; // ✅ Correctly import the Auth facade
 
 class AdminController extends Controller
 {
-    public function __construct()
-{
-    $this->middleware(['auth', 'can:manage-admin']); // ✅ Use permission-based middleware
-}
-
-
     /**
      * Show Admin Dashboard.
      */

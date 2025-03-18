@@ -60,18 +60,14 @@
           <a class="nav-link" href="{{ route('profile') }}">{{ auth()->user()->name }}</a>
         </li>
 
-        {{-- Show this only if the user is an admin --}}
-        @if(auth()->user()->hasRole('admin'))
-          <li class="nav-item">
-            <a class="nav-link" href="{{ route('admin.dashboard') }}">Admin Dashboard</a>
-          </li>
-        @endif
+        @if(auth()->user()->can('accessAdminDashboard', App\Models\User::class))
+    <li class="nav-item">
+        <a class="nav-link" href="{{ route('admin.dashboard') }}">Admin Dashboard</a>
+    </li>
+@endif
 
         {{-- Show this only if the user has permission to manage users --}}
         @if(auth()->user()->can('manage users'))
-          <li class="nav-item">
-            <a class="nav-link" href="{{ route('manage_users') }}">Manage Users</a>
-          </li>
         @endif
 
         <li class="nav-item">
@@ -91,6 +87,17 @@
           <a class="nav-link" href="{{ route('register') }}">Register</a>
         </li>
       @endauth
+      <a class="nav-link" href="{{ route('manage_users') }}">Manage Users</a>
+      <li class="nav-item">
+    <a class="nav-link" href="{{ route('do_logout') }}"
+       onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+       Logout
+    </a>
+    <form id="logout-form" action="{{ route('do_logout') }}" method="POST" style="display: none;">
+        @csrf
+    </form>
+</li>
+
     </ul>
   </div>
 </nav>

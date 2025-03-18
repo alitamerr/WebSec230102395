@@ -9,6 +9,10 @@ use Spatie\Permission\Middleware\RoleMiddleware;
 use Spatie\Permission\Middleware\PermissionMiddleware;
 use App\Models\Book;
 use App\Policies\BookPolicy;
+use App\Models\User;
+use App\Policies\AdminPolicy;
+
+
 
 
 class AppServiceProvider extends ServiceProvider
@@ -26,7 +30,10 @@ class AppServiceProvider extends ServiceProvider
 
     protected $policies = [
         Book::class => BookPolicy::class,
+        User::class => AdminPolicy::class,
     ];
+
+    
 
     /**
      * Bootstrap any application services.

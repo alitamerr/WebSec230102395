@@ -9,6 +9,13 @@ use App\Http\Controllers\GradesController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\BookController;
+use App\Http\Controllers\Auth\ForgotPasswordController;
+use App\Http\Controllers\Auth\RegisterController;
+
+Route::post('/register', [RegisterController::class, 'register'])->name('register');
+
+Route::get('/forgot-password', [ForgotPasswordController::class, 'showSecurityQuestionForm'])->name('forgot.password');
+
 
 Route::get('/profile', [ProfileController::class, 'changePassword'])->name('profile');
 Route::post('/profile/update-password', [ProfileController::class, 'updatePassword'])->name('update_password');
@@ -57,11 +64,11 @@ Route::controller(GpaSimulatorController::class)->group(function () {
     Route::get('/gpa-simulator', 'index')->name('gpa_simulator');
 });
 
-Route::middleware(['auth', 'role:admin'])->group(function () {
-    Route::get('admin/dashboard', [AdminController::class, 'index'])->name('admin.dashboard');
-    Route::get('admin/users', [AdminController::class, 'users'])->name('admin.users');
-    Route::post('admin/users/{id}/assign-role', [AdminController::class, 'assignRole'])->name('admin.assign_role');
-    Route::post('admin/users/{id}/remove-role', [AdminController::class, 'removeRole'])->name('admin.remove_role');
+Route::middleware('auth')->group(function () {
+    Route::get('/admin', [AdminController::class, 'index'])->name('admin.dashboard');
+    Route::get('/admin/users', [AdminController::class, 'users'])->name('admin.users');
+    Route::post('/admin/users/{user}/assign-role', [AdminController::class, 'assignRole'])->name('admin.assignRole');
+    Route::post('/admin/users/{user}/remove-role', [AdminController::class, 'removeRole'])->name('admin.removeRole');
 });
 
 Route::middleware('auth')->group(function () {
@@ -76,3 +83,9 @@ Route::middleware(['auth'])->group(function () {
 Route::middleware('auth')->group(function () {
     Route::resource('books', BookController::class);
 });
+
+Route::get('/forgot-password', [ForgotPasswordController::class, 'showSecurityQuestionForm'])->name('forgot.password');
+Route::post('/forgot-password', [ForgotPasswordController::class, 'checkSecurityAnswer']);
+Route::post('/reset-password', [ForgotPasswordController::class, 'resetPassword'])->name('reset.password');
+
+Route::get('/admin/manage-users', [AdminController::class, 'users'])->name('manage_users');

@@ -71,6 +71,20 @@
 
                         <div class="text-center mt-3">
                             Already have an account? <a href="{{ route('login') }}">Login</a>
+
+                            <div class="mb-3">
+    <label for="security_question" class="form-label">Security Question</label>
+    <select name="security_question" class="form-select" required>
+        <option value="What is your pet's name?">What is your pet's name?</option>
+        <option value="What is your mother's maiden name?">What is your mother's maiden name?</option>
+        <option value="What was your first school?">What was your first school?</option>
+    </select>
+</div>
+
+<div class="mb-3">
+    <label for="security_answer" class="form-label">Security Answer</label>
+    <input type="text" name="security_answer" class="form-control" required>
+</div>
                         </div>
                     </div>
                 </div>

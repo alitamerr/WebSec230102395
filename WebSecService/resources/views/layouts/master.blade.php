@@ -11,6 +11,11 @@
  @include('layouts.menu')
  <div class="container">
  @yield('content')
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <div class="container">
+            <a class="navbar-brand" href="{{ url('/') }}">My App</a>
+        </div>
+    </nav>
  </div>
 </body>
 </html>
