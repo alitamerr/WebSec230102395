@@ -56,6 +56,12 @@
                                 <input type="email" name="email" class="form-control" placeholder="Email" required value="{{ old('email') }}">
                             </div>
 
+                            <!-- Mobile Number Field -->
+                            <div class="mb-3">
+                                <label for="mobile_number" class="form-label">Mobile Number (Optional):</label>
+                                <input type="text" name="mobile_number" class="form-control" placeholder="Mobile Number" value="{{ old('mobile_number') }}">
+                            </div>
+
                             <div class="mb-3">
                                 <label for="password" class="form-label">Password:</label>
                                 <input type="password" name="password" class="form-control" placeholder="Password" required>
@@ -66,25 +72,25 @@
                                 <input type="password" name="password_confirmation" class="form-control" placeholder="Confirm Password" required>
                             </div>
 
+                            <div class="mb-3">
+                                <label for="security_question" class="form-label">Security Question:</label>
+                                <select name="security_question" class="form-select" required>
+                                    <option value="What is your pet's name?">What is your pet's name?</option>
+                                    <option value="What is your mother's maiden name?">What is your mother's maiden name?</option>
+                                    <option value="What was your first school?">What was your first school?</option>
+                                </select>
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="security_answer" class="form-label">Security Answer:</label>
+                                <input type="text" name="security_answer" class="form-control" required>
+                            </div>
+
                             <button type="submit" class="btn btn-primary w-100">Register</button>
                         </form>
 
                         <div class="text-center mt-3">
                             Already have an account? <a href="{{ route('login') }}">Login</a>
-
-                            <div class="mb-3">
-    <label for="security_question" class="form-label">Security Question</label>
-    <select name="security_question" class="form-select" required>
-        <option value="What is your pet's name?">What is your pet's name?</option>
-        <option value="What is your mother's maiden name?">What is your mother's maiden name?</option>
-        <option value="What was your first school?">What was your first school?</option>
-    </select>
-</div>
-
-<div class="mb-3">
-    <label for="security_answer" class="form-label">Security Answer</label>
-    <input type="text" name="security_answer" class="form-control" required>
-</div>
                         </div>
                     </div>
                 </div>

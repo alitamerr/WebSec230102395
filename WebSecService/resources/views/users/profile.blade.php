@@ -31,12 +31,15 @@
                                 <th>Email</th>
                                 <td>{{ auth()->user()->email }}</td>
                             </tr>
-                            <th>Roles</th>
-                            <td>
-                            @foreach($user->roles as $role)
-                            <span class="badge bg-primary">{{$role->name}}</span>
-                            @endforeach
-                            </td>
+                            <tr>
+    <th>Roles</th>
+    <td>
+        @foreach($user->roles ?? [] as $role)
+            <span class="badge bg-primary">{{ $role->name }}</span>
+        @endforeach
+    </td>
+</tr>
+
                         </table>
                         <div class="text-center mt-3">
                             <a href="{{ route('change_password') }}" class="btn btn-primary">Change Password</a>
