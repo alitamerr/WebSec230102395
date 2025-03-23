@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use Illuminate\Http\Request;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\ProductsController;
 use App\Http\Controllers\PageController;
@@ -11,6 +12,9 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\BookController;
 use App\Http\Controllers\Auth\ForgotPasswordController;
 use App\Http\Controllers\Auth\RegisterController;
+use App\Http\Controllers\Auth\LoginController;
+
+Route::post('/logout', [LoginController::class, 'logout'])->name('do_logout');
 
 Route::post('/register', [RegisterController::class, 'register'])->name('register');
 
@@ -64,9 +68,10 @@ Route::controller(GpaSimulatorController::class)->group(function () {
     Route::get('/gpa-simulator', 'index')->name('gpa_simulator');
 });
 
+
 Route::middleware('auth')->group(function () {
     Route::get('/admin', [AdminController::class, 'index'])->name('admin.dashboard');
-    Route::get('/admin/users', [AdminController::class, 'users'])->name('admin.users');
+    Route::get('/admin/manage-users', [AdminController::class, 'users'])->name('manage_users');
     Route::post('/admin/users/{user}/assign-role', [AdminController::class, 'assignRole'])->name('admin.assignRole');
     Route::post('/admin/users/{user}/remove-role', [AdminController::class, 'removeRole'])->name('admin.removeRole');
 });
@@ -84,8 +89,21 @@ Route::middleware('auth')->group(function () {
     Route::resource('books', BookController::class);
 });
 
+
+
+// Show forgot password form (Enter email)
 Route::get('/forgot-password', [ForgotPasswordController::class, 'showSecurityQuestionForm'])->name('forgot.password');
-Route::post('/forgot-password', [ForgotPasswordController::class, 'checkSecurityAnswer']);
+
+// Process email and show security question
+Route::post('/forgot-password', [ForgotPasswordController::class, 'checkSecurityAnswer'])->name('forgot.password.check');
+
+// Show reset password form after correct answer
+Route::get('/reset-password', function (Request $request) {
+    return view('auth.reset-password', ['email' => $request->query('email')]);
+})->name('reset.password.form');
+
+// Handle the password reset
 Route::post('/reset-password', [ForgotPasswordController::class, 'resetPassword'])->name('reset.password');
+
 
 Route::get('/admin/manage-users', [AdminController::class, 'users'])->name('manage_users');

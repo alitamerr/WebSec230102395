@@ -1,18 +1,13 @@
 <?php
 
-
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\User;
-use Spatie\Permission\Models\Role; // ✅ Correctly import the Role class
-use Spatie\Permission\Models\Permission; // ✅ Correctly import the Permission class
-use Illuminate\Support\Facades\Hash; // ✅ Correctly import the Hash facade
-use Illuminate\Support\Facades\Validator; // ✅ Correctly import the Validator facade
-use Illuminate\Support\Facades\Auth; // ✅ Correctly import the Auth facade
-
-
-
+use Spatie\Permission\Models\Role;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Gate; // ✅ Import Gate for authorization
 
 class AdminController extends Controller
 {
@@ -21,31 +16,45 @@ class AdminController extends Controller
      */
     public function index()
     {
-        return view('admin.dashboard'); // ✅ Ensure `admin/dashboard.blade.php` exists
+        if (!Gate::allows('manageUsers')) {
+            abort(403); // ✅ Prevent unauthorized access
+        }
+
+        return view('admin.dashboard'); // Ensure this view exists
     }
 
     /**
      * Show All Users with Roles.
      */
     public function users()
-    {
-        $users = User::with('roles')->get(); // ✅ Fetch users with roles
-        return view('admin.users', compact('users'));
+{
+    if (!Gate::allows('manageUsers', Auth::user())) {
+        abort(403); // 🚨 Prevent unauthorized access
     }
 
+    $users = User::with('roles')->get();
+    $roles = Role::all();
+
+    return view('admin.users', compact('users', 'roles'));
+}
+
     /**
-     * Assign Role to User.
+     * Assign Role to a User.
      */
     public function assignRole(Request $request, $userId)
     {
+        if (!Gate::allows('manageUsers')) {
+            abort(403); // ✅ Prevent unauthorized access
+        }
+
         $request->validate([
             'role' => 'required|exists:roles,name',
         ]);
 
-        $user = User::findOrFail($userId);
-        $user->syncRoles([$request->role]); // ✅ Remove old roles & assign new one
+        $targetUser = User::findOrFail($userId);
+        $targetUser->syncRoles([$request->role]);
 
-        return redirect()->route('admin.users')->with('status', 'Role updated successfully.');
+        return redirect()->route('manage_users')->with('status', 'Role assigned successfully.');
     }
 
     /**
@@ -53,9 +62,13 @@ class AdminController extends Controller
      */
     public function removeRole($userId)
     {
-        $user = User::findOrFail($userId);
-        $user->syncRoles([]); // ✅ Removes all roles
+        if (!Gate::allows('manageUsers')) {
+            abort(403); // ✅ Prevent unauthorized access
+        }
 
-        return redirect()->route('admin.users')->with('status', 'User role removed.');
+        $targetUser = User::findOrFail($userId);
+        $targetUser->syncRoles([]);
+
+        return redirect()->route('manage_users')->with('status', 'User role removed successfully.');
     }
 }

@@ -29,4 +29,12 @@ class AdminPolicy
     {
         return $user->hasRole('admin');
     }
+
+    public function manageUsers(User $user)
+{
+    return $user->hasRole('admin'); // ✅ Only allow admins
 }
+}
+
+
+
