@@ -2,22 +2,35 @@
 
 namespace App\Providers;
 
-use Illuminate\Support\ServiceProvider;
+use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
 use Illuminate\Support\Facades\Gate;
 use Spatie\Permission\Middleware\RoleMiddleware;
 use Spatie\Permission\Middleware\PermissionMiddleware;
 use App\Models\User;
-use App\Policies\AdminPolicy;
+use App\Policies\UserPolicy;
+use App\Models\Product;
+use App\Policies\ProductPolicy;
 
 class AppServiceProvider extends ServiceProvider
 {
-    
+    /**
+     * The policy mappings for the application.
+     * This replaces the manual policy registration in the boot method for these models.
+     *
+     * @var array
+     */
+    protected $policies = [
+        User::class => UserPolicy::class,
+        Product::class => ProductPolicy::class,
+        
+    ];
+
     /**
      * Register any application services.
      */
     public function register(): void
     {
-        // ✅ Register Spatie's middleware
+        // Register Spatie's middleware
         $this->app->singleton(RoleMiddleware::class);
         $this->app->singleton(PermissionMiddleware::class);
     }
@@ -27,14 +40,10 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        // ✅ Register policies
-        Gate::define('manage users', function ($user) {
-            return $user->hasRole('admin');
-        });
+        $this->registerPolicies();
 
-        Gate::policy(User::class, AdminPolicy::class);
-
-        Gate::define('manageRoles', function ($user) {
+        // Define a simple gate. Consider moving complex checks to policies.
+        Gate::define('manage-users', function ($user) {
             return $user->hasRole('admin');
         });
     }

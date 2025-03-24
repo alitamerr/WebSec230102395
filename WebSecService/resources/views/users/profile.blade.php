@@ -8,7 +8,18 @@
     <link href="{{ asset('css/bootstrap.min.css') }}" rel="stylesheet">
     <script src="{{ asset('js/bootstrap.bundle.min.js') }}"></script>
 </head>
+<body>
+<h1>Welcome, {{ $user->name }}</h1>
+<p>Credit Balance: ${{ $user->credit }}</p>
+    <div class="container mt-5">
+        <h1>Welcome, {{ Auth::user()->name }}</h1>
+        <p>Your account has been successfully created.</p>
+        
+        <!-- Back to Home Button -->
+        <a href="{{ url('/') }}" class="btn btn-primary">Back to Home</a>
 
+        <!-- Optionally, include other user information or actions -->
+    </div>
 <body>
     <div class="container mt-5">
         <div class="row justify-content-center">

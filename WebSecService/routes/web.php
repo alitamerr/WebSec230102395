@@ -13,6 +13,7 @@ use App\Http\Controllers\BookController;
 use App\Http\Controllers\Auth\ForgotPasswordController;
 use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\Auth\LoginController;
+use App\Http\Controllers\Auth\UserManagementController;
 
 Route::post('/logout', [LoginController::class, 'logout'])->name('do_logout');
 
@@ -62,6 +63,7 @@ Route::controller(PageController::class)->group(function () {
 Route::controller(ProductsController::class)->group(function () {
     Route::get('/products', 'list')->name('products');
 });
+Route::get('/products', [ProductsController::class, 'index'])->name('products.index');
 
 // GPA Simulator
 Route::controller(GpaSimulatorController::class)->group(function () {
@@ -107,3 +109,19 @@ Route::post('/reset-password', [ForgotPasswordController::class, 'resetPassword'
 
 
 Route::get('/admin/manage-users', [AdminController::class, 'users'])->name('manage_users');
+
+Route::middleware(['auth', 'role:admin'])->group(function () {
+    Route::get('/admin/dashboard', [AdminController::class, 'index'])->name('admin.dashboard');
+});
+Route::post('/products', 'ProductController@store')->name('products.store');
+Route::put('/products/{product}', 'ProductController@update')->name('products.update');
+Route::delete('/products/{product}', 'ProductController@destroy')->name('products.destroy');
+
+Route::resource('products', 'ProductsController');
+
+
+Route::prefix('admin')->middleware(['auth', 'role:admin'])->group(function () {
+    Route::get('employees', [UserManagementController::class, 'index'])->name('admin.employees.index');
+    Route::get('employees/create', [UserManagementController::class, 'create'])->name('admin.employees.create');
+    Route::post('employees', [UserManagementController::class, 'store'])->name('admin.employees.store');
+});

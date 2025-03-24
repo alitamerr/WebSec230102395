@@ -18,6 +18,7 @@ class User extends Authenticatable
         'mobile_number',
         'security_question',
         'security_answer',
+        'credit',
     ];
 
     protected $hidden = [
